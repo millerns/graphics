@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script id="vertex-shader" type="x-shader/x-vertex">
+			attribute vec4 vPosition;
+			uniform   vec3 theta;
+
+			void main() {
+				vec3 angles = radians(theta);
+				vec3 c = cos(angles);
+				vec3 s = sin(angles);
+				
+				mat4 rx = mat4 (1.0, 0.0, 0.0, 0.0,
+							   0.0, c.x, s.x, 0.0,
+							   0.0, -s.x, c.x, 0.0,
+							   0.0, 0.0, 0.0, 1.0);
+							   
+				mat4 ry = mat4 (c.y, 0.0, -s.y, 0.0,
+								0.0, 1.0, 0.0, 0.0,
+								s.y, 0.0, c.y, 0.0,
+								0.0, 0.0, 0.0, 1.0);
+				
+				mat4 rz = mat4 (c.z, -s.z, 0.0, 0.0,
+								s.z, c.z, 0.0, 0.0,
+								0.0, 0.0, 1.0, 0.0,
+								0.0, 0.0, 0.0, 1.0);
+				
+				gl_Position = rz * ry * rx * vPosition;
+			}
+		</script>
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;   
+			uniform vec4 color;
+			void main() {
+				gl_FragColor = color;
+			}
+		</script>
+		<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+		<script type="text/javascript" src="../Common/initShaders.js"></script>
+		<script type="text/javascript" src="../Common/MV.js"></script>
+		<script type="text/javascript" src="L-System.js"></script>
+		<script type="text/javascript" src="L-SystemVars.js"></script>
+		<script type="text/javascript" src="renderingFunctions.js"></script>
+		<script type="text/javascript" src="shapes.js"></script>
+	</head>
+	<body>
+		<div>
+<button id = "Button1">Increase Z</button>
+<button id = "Button2">Decrease Z</button>
+<button id = "Button3">Increase R</button>
+<button id = "Button4">Decrease R</button>
+		</div>
+		<canvas id="gl-canvas" width="512" height="512" style="border-style:solid;border-width:5px">
+		Oops ... your browser doesn't support the HTML5 canvas element
+		</canvas>
+		<div>
+<button id = "Button5">Increase theta</button>
+<button id = "Button6">Decrease theta</button>
+<button id = "Button7">Increase phi</button>
+<button id = "Button8">Decrease phi</button>
+		</div>
+	</body>
+</html>
