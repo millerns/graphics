@@ -11,7 +11,6 @@ var pyramidIndexIndex = 0;
 /**************ARRAYS****************/
 var cubeIndices = [];
 var pyramidIndices = [];
-var theta = [];
 /****************VALUES**************/
 var bytesPerV4 = 32;
 var v4PerCube = 8;

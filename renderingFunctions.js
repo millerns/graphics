@@ -11,6 +11,7 @@ var canvas;
 var gl;
 var colorLoc;
 var thetaLoc;
+var rotation = false;
 /**************BUFFERS*****************/
 var vBuffer;
 var iBuffer;
@@ -53,7 +54,7 @@ function loadBuffers(){
     gl.useProgram( program );
 	
 	colorLoc = gl.getUniformLocation (program, "color");
-	thetaLoc = gl.getUniformLocation (program, "theta");
+	//thetaLoc = gl.getUniformLocation (program, "theta");
 	
 	// Vertex Buffer
     vBuffer = gl.createBuffer();
@@ -69,7 +70,7 @@ function loadBuffers(){
 	
 	// Set up Model View Matrix
 	modelViewMatrixLoc = gl.getUniformLocation( program, "modelViewMatrix" );
-    projectionMatrixLoc = gl.getUniformLocation( program, "projectionMatrix" );
+    projectionMatrixLoc = gl.getUniformLocation( program, "projectionMatrix" );	
 	
 	// Index Buffer
 	iBuffer = gl.createBuffer();
@@ -102,11 +103,20 @@ function renderPyramid(){
 	}
 }
 
+function rotate(){
+	theta += dr;
+	if (theta > 2*Math.PI) {
+		theta -= 2*Math.PI;
+	}
+}
+
 function adjustPerspective(){
 	eye = vec3(radius*Math.sin(theta)*Math.cos(phi), 
-        radius*Math.sin(theta)*Math.sin(phi), radius*Math.cos(theta));
+				radius*Math.sin(theta)*Math.sin(phi), 
+				radius*Math.cos(theta));
 	//adjust perspective
-    modelViewMatrix = lookAt(eye, at , up);
+	console.log("Theta: " + theta + " Phi: " + phi + " Eye: " + eye + " At: " + at + " Up: " + up);
+    modelViewMatrix = lookAt(eye, at, up);
     projectionMatrix = ortho(left, right, bottom, ytop, near, far);
 	gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(modelViewMatrix) );
     gl.uniformMatrix4fv( projectionMatrixLoc, false, flatten(projectionMatrix) );
@@ -116,12 +126,8 @@ function adjustPerspective(){
 function render()
 {
     gl.clear( gl.COLOR_BUFER_BIT | gl.DEPTH_BUFFER_BIT);
-	//rotate();
-	//gl.uniform3fv (thetaLoc, flatten(theta));
-	//renderCube();
-
 	adjustPerspective();
-	
+	if (rotation) {rotate()};
 	renderPyramid();	
 	
 	requestAnimFrame (render);
