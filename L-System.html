@@ -2,10 +2,14 @@
 <html>
 	<head>
 		<script id="vertex-shader" type="x-shader/x-vertex">
+			//attribute vec4 vPosition;
+			//uniform   vec3 theta;
 			attribute vec4 vPosition;
-			uniform   vec3 theta;
-
+			uniform mat4 modelViewMatrix;
+			uniform mat4 projectionMatrix;
+			
 			void main() {
+				/*
 				vec3 angles = radians(theta);
 				vec3 c = cos(angles);
 				vec3 s = sin(angles);
@@ -24,8 +28,9 @@
 								s.z, c.z, 0.0, 0.0,
 								0.0, 0.0, 1.0, 0.0,
 								0.0, 0.0, 0.0, 1.0);
-				
 				gl_Position = rz * ry * rx * vPosition;
+				*/
+				gl_Position = projectionMatrix*modelViewMatrix*vPosition;
 			}
 		</script>
 		<script id="fragment-shader" type="x-shader/x-fragment">
@@ -33,6 +38,7 @@
 			uniform vec4 color;
 			void main() {
 				gl_FragColor = color;
+				//gl_FragColor = vec4(0.0,0.0,0.0,1.0);
 			}
 		</script>
 		<script type="text/javascript" src="../Common/webgl-utils.js"></script>

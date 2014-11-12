@@ -2,6 +2,42 @@
 // Nick Miller, 11/12/14
 // Rendering Functions File
 
+/**************SETTINGS***************/
+var numVertices  = 36;
+var bufferSize = 1000;
+
+/**************VARS***************/
+var canvas;
+var gl;
+var colorLoc;
+var thetaLoc;
+/**************BUFFERS*****************/
+var vBuffer;
+var iBuffer;
+var vPosition;
+/**************ARRAYS****************/
+var colors = [];
+var xAxis = 0;
+var yAxis = 1;
+var zAxis = 2;
+var axis = 0;
+/**********PERSPECTIVE VALUES************/
+var near = -10;
+var far = 10;
+var radius = 6.0;
+var theta  = 0.0;
+var phi    = 0.0;
+var dr = 5.0 * Math.PI/180.0;
+var left = -2.0;
+var right = 2.0;
+var ytop = 2.0;
+var bottom = -2.0;
+var modelViewMatrix, projectionMatrix;
+var modelViewMatrixLoc, projectionMatrixLoc;
+var eye;
+const at = vec3(0.0, 0.0, 0.0);
+const up = vec3(0.0, 1.0, 0.0);
+
 function setupGL(){
 	canvas = document.getElementById( "gl-canvas" );	
     gl = WebGLUtils.setupWebGL( canvas );
@@ -31,6 +67,10 @@ function loadBuffers(){
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 	
+	// Set up Model View Matrix
+	modelViewMatrixLoc = gl.getUniformLocation( program, "modelViewMatrix" );
+    projectionMatrixLoc = gl.getUniformLocation( program, "projectionMatrix" );
+	
 	// Index Buffer
 	iBuffer = gl.createBuffer();
 	gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, iBuffer);
@@ -39,9 +79,9 @@ function loadBuffers(){
 }
 
 // Rotate the scene
-function rotate(){
-	theta[axis] += 1.0;
-}
+// function rotate(){
+	// theta[axis] += 1.0;
+// }
 
 // Render a cube
 function renderCube(){
@@ -62,13 +102,27 @@ function renderPyramid(){
 	}
 }
 
+function adjustPerspective(){
+	eye = vec3(radius*Math.sin(theta)*Math.cos(phi), 
+        radius*Math.sin(theta)*Math.sin(phi), radius*Math.cos(theta));
+	//adjust perspective
+    modelViewMatrix = lookAt(eye, at , up);
+    projectionMatrix = ortho(left, right, bottom, ytop, near, far);
+	gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(modelViewMatrix) );
+    gl.uniformMatrix4fv( projectionMatrixLoc, false, flatten(projectionMatrix) );
+}
+
 // Render the scene
 function render()
 {
     gl.clear( gl.COLOR_BUFER_BIT | gl.DEPTH_BUFFER_BIT);
-	rotate();
-	gl.uniform3fv (thetaLoc, flatten(theta));
+	//rotate();
+	//gl.uniform3fv (thetaLoc, flatten(theta));
 	//renderCube();
-	renderPyramid();
+
+	adjustPerspective();
+	
+	renderPyramid();	
+	
 	requestAnimFrame (render);
 }
