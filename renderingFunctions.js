@@ -80,21 +80,21 @@ function loadBuffers(){
 
 
 // Render a pyramid
-function renderPyramid(){
+function renderPyramid(color){
 	var sides = 4;
 	var trianglesPerSide = 1;
 	var arrayPositions = 3 * trianglesPerSide;
+	gl.uniform4fv (colorLoc, color);
 	for (var i=0; i<sides; i++) {
-		gl.uniform4fv (colorLoc, colors[i]);
 		gl.drawElements( gl.TRIANGLES, arrayPositions, gl.UNSIGNED_BYTE, arrayPositions*i);
 	}
 }
 
 // Render a cube
-function renderCube(){
+function renderCube(color){
 	var offset = cubeIndexIndexStart; //12
+	gl.uniform4fv (colorLoc, color);
 	for (var i=0; i<6; i++) {
-		gl.uniform4fv (colorLoc, colors[i]);
 		gl.drawElements( gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, offset+(6*i) );
 	}
 }
@@ -103,25 +103,37 @@ function renderCube(){
 function renderDiamond(){
 	rotateX(Math.PI / 4.0);
 	translate(-1, 1, 0);
-	renderCube();
+	renderCube(colors[3]);
 	resetPerspective();
 }
 
 // Render a rectangle
-function renderRectangle(){
+function renderRectangle(color){
 	var offset = rectangleIndexIndexStart; //48
-	gl.uniform4fv (colorLoc, colors[5]);
+	gl.uniform4fv (colorLoc, color);
 	gl.drawElements( gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, offset);
 }
 
 // Render the floor of the world!
 function renderGround(){
 	translate(0, -distanceAboveGround, 0);
-	renderRectangle();
+	renderRectangle(colorGround);
 	resetPerspective();
 }
 
-// Rotate the scene
+function renderTrees(){
+	translate(-3, -distanceAboveGround, 3);
+	renderPyramid(colorTree);
+	translate(2, -.5, 1);
+	renderPyramid(colorTree);
+	resetPerspective();
+	translate(0, -distanceAboveGround, 10);
+	scale(2, 5, 2);
+	renderPyramid(colorTree);
+	resetPerspective();
+}
+
+// Rotate the camera
 function rotate(){
 	theta += dr;
 	if (theta > 2*Math.PI) {
@@ -168,9 +180,14 @@ function rotateZ(rz){
 }
 // Translate the modelViewMatix the specified distances
 function translate(x, y, z){
-	var transform = mat4(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1);	
+	var transform = mat4(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1);
 	modelViewMatrix = mult(modelViewMatrix, transform);
 	setPerspective();
+}
+function scale(x, y, z){
+	var transform = mat4(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1);
+	modelViewMatrix = mult(modelViewMatrix, transform);
+	setPerspective();	
 }
 // Updates the perspective with the modelViewMatrix and projectionMatrix
 function setPerspective(){
@@ -184,10 +201,15 @@ function render()
     gl.clear( gl.COLOR_BUFER_BIT | gl.DEPTH_BUFFER_BIT);
 	resetPerspective();
 	if (rotation) {rotate()};
-	renderCube();
-	renderPyramid();
-	renderDiamond();
+	// model
+	renderCube(colorModel);
+	// model
+	renderPyramid(colorModel);
+	// model
+	renderDiamond(colorModel);
 	//renderRectangle();
+	//ground/grass
 	renderGround();
+	renderTrees();
 	requestAnimFrame (render);
 }

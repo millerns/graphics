@@ -85,5 +85,5 @@ function rotateUp(){
 // Moves the camera down
 function rotateDown(){
 	phi += dr;
-	if (phi > Math.PI) {phi = Math.PI;}
+	if (phi > 1.7) {phi = 1.7;}
 }

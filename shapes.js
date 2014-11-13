@@ -2,7 +2,7 @@
 // Nick Miller, 11/12/14
 // Shape Functions File
 
-var groundSize = 10;
+var groundSize = 100;
 /**************VARS***************/
 var cubeVertexIndex;
 var cubeIndexIndex;
@@ -75,6 +75,17 @@ function addRectangle(v1, v2, v3, v4){
 	rectangleIndexIndex += rectangleIndexIndexIncrement;
 }
 
+// Add a half sphere to the vertex and index buffer
+function addHemisphere(){
+	gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+	gl.bufferSubData(gl.ARRAY_BUFFER, sphereVertexIndex, flatten([v1, v2, v3, v4]));
+	sphereVertexIndex += sphereVertexIndexIncrement;
+	
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
+	gl.bufferSubData(gl.ELEMENT_ARRAY_BUFFER, sphereIndexIndex, new Uint8Array(sphereIndices));	
+	sphereIndexIndex += sphereIndexIndexIncrement;
+}
+
 // Add a standard pyramid to the scene
 function addBasicPyramid(){
 	var basicTetrahedronA = vec4(0.0, 0.0, -1.0, 1);
@@ -96,6 +107,7 @@ function addBasicCube(){
 	var v8 = vec4(0.5, -0.5, -0.5, 1.0);
 	addCube(v1, v2, v3, v4, v5, v6, v7, v8);
 }
+
 
 function addXZRectangle() {
 	var v1 = vec4(-groundSize, 0, -groundSize, 1);
