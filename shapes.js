@@ -85,14 +85,14 @@ function addRectangle(v1, v2, v3, v4){
 }
 
 // Add a sphere to the vertex and index buffer
-function addSphere(vertices){
+function addSphere(){
 	gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-	gl.bufferSubData(gl.ARRAY_BUFFER, sphereVertexIndex, flatten(vertices));
+	console.log(sphereVertexIndex);
+	gl.bufferSubData(gl.ARRAY_BUFFER, sphereVertexIndex, flatten(pointsArray));
 	sphereVertexIndex += sphereVertexIndexIncrement;
-	
-	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
-	gl.bufferSubData(gl.ELEMENT_ARRAY_BUFFER, sphereIndexIndex, new Uint8Array(sphereIndices));	
-	sphereIndexIndex += sphereIndexIndexIncrement;
+	// gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
+	// gl.bufferSubData(gl.ELEMENT_ARRAY_BUFFER, sphereIndexIndex, new Uint8Array(sphereIndices));	
+	// sphereIndexIndex += sphereIndexIndexIncrement;
 }
 
 // Add a standard pyramid to the scene

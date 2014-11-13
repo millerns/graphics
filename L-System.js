@@ -16,16 +16,14 @@ window.onload = function init()
 	addBasicPyramid();
 	addBasicCube();
 	addBasicRectangle();
+	addSphere();
 	setButtonListeners();
     render();
 };
 
 // Register event listeners for the buttons
 function setButtonListeners(){
-	document.getElementById("RotateXButton").onclick = function(){setRotation(xAxis);};
-	document.getElementById("RotateYButton").onclick = function (){setRotation(yAxis); };
-	document.getElementById("RotateZButton").onclick = function (){setRotation(zAxis); };
-	document.getElementById("RotationToggleButton").onclick = function () { toggleRotation();};
+	//document.getElementById("RotationToggleButton").onclick = function () { toggleRotation();};
 	
 	document.onkeydown = function(e) {handleKeyboard(e);};
 }

@@ -3,7 +3,7 @@
 // Rendering Functions File
 
 /**************SETTINGS***************/
-const bufferSize = 1000;
+const bufferSize = 50000;
 const distanceAboveGround = 5;
 
 /**************VARS***************/
@@ -55,6 +55,20 @@ function loadBuffers(){
 	
 	colorLoc = gl.getUniformLocation (program, "color");
 	
+	ambientProduct = mult(lightAmbient, materialAmbient);
+    diffuseProduct = mult(lightDiffuse, materialDiffuse);
+    specularProduct = mult(lightSpecular, materialSpecular);
+	
+	tetrahedron(va, vb, vc, vd, numTimesToSubdivide);
+	
+	// var nBuffer = gl.createBuffer();
+    // gl.bindBuffer( gl.ARRAY_BUFFER, nBuffer);
+    // gl.bufferData( gl.ARRAY_BUFFER, flatten(normalsArray), gl.STATIC_DRAW );
+    
+    // var vNormal = gl.getAttribLocation( program, "vNormal" );
+    // gl.vertexAttribPointer( vNormal, 4, gl.FLOAT, false, 0, 0 );
+    // gl.enableVertexAttribArray( vNormal);
+	
 	// Vertex Buffer
     vBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
@@ -76,6 +90,13 @@ function loadBuffers(){
 	gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, iBuffer);
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, bufferSize, gl.STATIC_DRAW);
 	//gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(indices), gl.STATIC_DRAW);
+	
+	gl.uniform4fv( gl.getUniformLocation(program, "ambientProduct"),flatten(ambientProduct) );
+	gl.uniform4fv( gl.getUniformLocation(program, "diffuseProduct"),flatten(diffuseProduct) );
+	gl.uniform4fv( gl.getUniformLocation(program, "specularProduct"),flatten(specularProduct) );	
+	gl.uniform4fv( gl.getUniformLocation(program, "lightPosition"),flatten(lightPosition) );
+	gl.uniform1f( gl.getUniformLocation(program, "shininess"),materialShininess );
+	
 }
 
 
@@ -212,6 +233,16 @@ function renderSky() {
 	resetPerspective();
 }
 
+function renderSphere(){	
+	gl.uniform4fv (colorLoc, colors[0]);
+	//console.log(sphereVertexIndexStart);
+	for (var i=0; i<sphereIndex; i+=3) {
+		//console.log(i%5);
+		gl.uniform4fv (colorLoc, colors[i%5]);
+		gl.drawArrays(gl.TRIANGLES, sphereVertexIndexStart+i, 3);
+	}
+}
+
 // Rotate the camera
 function rotate(){
 	theta += dr;
@@ -283,7 +314,7 @@ function render()
 	// model
 	//renderCube(colorModel);
 	// model
-	renderPyramid(colorModel);
+	//renderPyramid(colorModel);
 	// model
 	//renderDiamond(colorModel);
 	renderBlockSun();
@@ -293,5 +324,7 @@ function render()
 	//renderTrees();
 	renderForest();
 	renderSky();
+	//console.log("draw");
+	renderSphere();
 	requestAnimFrame (render);
 }
