@@ -51,7 +51,14 @@ function setInitialGlobalValues(){
 	];
 	for (var i = 0; i < rectangleIndices.length; i++){
 		rectangleIndices[i] += vec4PerPyramid + vec4PerCube;
-	}	
+	}
+	sphereIndices = [];
+	defineSphereIndices();
+	for (var i = 0; i < sphereIndices.length; i++){
+		sphereIndices[i] += vec4PerPyramid + vec4PerCube + vec4PerRectangle;
+	}
+	
+	
 	//console.log(rectangleIndices);
 	
 	pyramidVertexIndexStart = 0;
@@ -60,10 +67,18 @@ function setInitialGlobalValues(){
 	cubeIndexIndexStart = pyramidIndexIndexStart+ pyramidIndexIndexIncrement;
 	rectangleVertexIndexStart = cubeVertexIndexStart + cubeVertexIndexIncrement;
 	rectangleIndexIndexStart = cubeIndexIndexStart + cubeIndexIndexIncrement;
+	sphereVertexIndexStart = rectangleVertexIndexStart + rectangleVertexIndexIncrement;
+	rectangleIndexIndexStart = rectangleIndexIndexStart + rectangleIndexIndexIncrement;
 	pyramidVertexIndex = pyramidVertexIndexStart;
 	pyramidIndexIndex = pyramidIndexIndexStart;
 	cubeVertexIndex = cubeVertexIndexStart;
 	cubeIndexIndex = cubeIndexIndexStart;
 	rectangleVertexIndex = rectangleVertexIndexStart;
 	rectangleIndexIndex = rectangleIndexIndexStart;
+	sphereVertexIndex = sphereVertexIndexStart;
+	sphereIndexIndex = sphereIndexIndexStart;
+}
+
+function defineSphereIndices(){
+	
 }

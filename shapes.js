@@ -4,6 +4,8 @@
 
 var groundSize = 100;
 var pyramidSide = 1;
+const indexPerSphere = 30;
+const vec4PerSphere = 30;
 /**************VARS***************/
 var cubeVertexIndex;
 var cubeIndexIndex;
@@ -17,6 +19,10 @@ var rectangleVertexIndex;
 var rectangleIndexIndex;
 var rectangleVertexIndexStart;
 var rectangleIndexIndexStart;
+var sphereVertexIndex;
+var sphereIndexIndex;
+var sphereVertexIndexStart;
+var sphereIndexIndexStart;
 /**************ARRAYS****************/
 var cubeIndices = [];
 var pyramidIndices = [];
@@ -29,6 +35,7 @@ const vec4PerCube = 8;
 const cubeVertexIndexIncrement = bytesPerUint * uintPerVec4 * vec4PerCube;
 const vec4PerRectangle = 4;
 const rectangleVertexIndexIncrement = bytesPerUint * uintPerVec4 * vec4PerRectangle;
+const sphereVertexIndexIncrement = bytesPerUint * uintPerVec4 * vec4PerSphere;
 const bytesPerIndex = 1;
 const indexPerPyramid = 12;
 const pyramidIndexIndexIncrement = bytesPerIndex * indexPerPyramid;
@@ -36,6 +43,7 @@ const indexPerCube = 36;
 const cubeIndexIndexIncrement = bytesPerIndex * indexPerCube;
 const indexPerRectangle = 6;
 const rectangleIndexIndexIncrement = bytesPerIndex * indexPerRectangle;
+const sphereIndexIndexIncrement = bytesPerIndex * indexPerSphere;
 
 // Add a cube to the vertex and index buffer
 function addCube(v1, v2, v3, v4, v5, v6, v7, v8){
@@ -76,10 +84,10 @@ function addRectangle(v1, v2, v3, v4){
 	rectangleIndexIndex += rectangleIndexIndexIncrement;
 }
 
-// Add a half sphere to the vertex and index buffer
-function addHemisphere(){
+// Add a sphere to the vertex and index buffer
+function addSphere(vertices){
 	gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-	gl.bufferSubData(gl.ARRAY_BUFFER, sphereVertexIndex, flatten([v1, v2, v3, v4]));
+	gl.bufferSubData(gl.ARRAY_BUFFER, sphereVertexIndex, flatten(vertices));
 	sphereVertexIndex += sphereVertexIndexIncrement;
 	
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
