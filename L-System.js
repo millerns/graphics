@@ -8,6 +8,7 @@ window.onload = function init()
 	setInitialGlobalValues();
 	setupGL();
 	loadBuffers();
+	initializeLight();
 	//addBasicCube(); 
 	addBasicPyramid();
 	setButtonListeners();

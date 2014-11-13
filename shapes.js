@@ -4,10 +4,14 @@
 
 
 /**************VARS***************/
-var cubeVertexIndex = 0;
-var cubeIndexIndex = 0;
-var pyramidVertexIndex = 0;
-var pyramidIndexIndex = 0;
+var pyramidVertexIndexStart = 100;
+var pyramidIndexIndexStart = 100;
+var cubeVertexIndexStart = 0;
+var cubeIndexIndexStart = 0;
+var cubeVertexIndex = cubeVertexIndexStart;
+var cubeIndexIndex = cubeIndexIndexStart;
+var pyramidVertexIndex = pyramidVertexIndexStart;
+var pyramidIndexIndex = pyramidIndexIndexStart;
 /**************ARRAYS****************/
 var cubeIndices = [];
 var pyramidIndices = [];
@@ -17,11 +21,12 @@ var v4PerCube = 8;
 var v4PerPyramid = 4;
 var bytesPerIndex = 8;
 var indexPerCube = 36;
-var indexPerPyramid = 36;
+var indexPerPyramid = 12;
 var cubeVertexIndexIncrement = bytesPerV4 * v4PerCube;
 var cubeIndexIndexIncrement = bytesPerIndex * indexPerCube;
 var pyramidVertexIndexIncrement = bytesPerV4 * v4PerCube;
 var pyramidIndexIndexIncrement = bytesPerIndex * indexPerCube;
+
 
 var basicTetrahedronA = vec4(0.0, 0.0, -1.0, 1);
 var basicTetrahedronB = vec4(0.0, 0.942809, 0.333333, 1);
@@ -47,13 +52,16 @@ function addCube(v1, v2, v3, v4, v5, v6, v7, v8){
 function addPyramid(v1, v2, v3, v4){
 	gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
 	gl.bufferSubData(gl.ARRAY_BUFFER, pyramidVertexIndex, flatten([v1, v2, v3, v4]))
-	
+	console.log("pyramidVertexIndex: " + pyramidVertexIndex + " pyramidIndexIndex: " + pyramidIndexIndex);
 	pyramidVertexIndex += pyramidVertexIndexIncrement;
 	
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
 	gl.bufferSubData(gl.ELEMENT_ARRAY_BUFFER, pyramidIndexIndex, new Uint8Array(pyramidIndices));
 	
 	pyramidIndexIndex += pyramidIndexIndexIncrement;
+	
+	
+	console.log("pyramidVertexIndex: " + pyramidVertexIndex + " pyramidIndexIndex: " + pyramidIndexIndex);
 }
 
 // Add a standard pyramid to the scene

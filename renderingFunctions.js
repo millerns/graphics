@@ -29,10 +29,11 @@ var radius = 6.0;
 var theta  = 0.0;
 var phi    = 0.0;
 var dr = 5.0 * Math.PI/180.0;
-var left = -2.0;
-var right = 2.0;
-var ytop = 2.0;
-var bottom = -2.0;
+var viewDistance = 5;
+var left = -viewDistance;
+var right = viewDistance;
+var ytop = viewDistance;
+var bottom = -viewDistance;
 var modelViewMatrix, projectionMatrix;
 var modelViewMatrixLoc, projectionMatrixLoc;
 var eye;
@@ -79,16 +80,11 @@ function loadBuffers(){
 	//gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(indices), gl.STATIC_DRAW);
 }
 
-// Rotate the scene
-// function rotate(){
-	// theta[axis] += 1.0;
-// }
-
 // Render a cube
 function renderCube(){
 	for (var i=0; i<6; i++) {
 		gl.uniform4fv (colorLoc, colors[i]);
-		gl.drawElements( gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 6*i );
+		gl.drawElements( gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, cubeVertexIndexStart+(6*i) );
 	}
 }
 
@@ -99,8 +95,18 @@ function renderPyramid(){
 	var arrayPositions = 3 * trianglesPerSide;
 	for (var i=0; i<sides; i++) {
 		gl.uniform4fv (colorLoc, colors[i]);
-		gl.drawElements( gl.TRIANGLES, arrayPositions, gl.UNSIGNED_BYTE, arrayPositions*i );
+		//drawElements(mode, number of elements, type of indices, indices location
+		gl.drawElements( gl.TRIANGLES, arrayPositions, gl.UNSIGNED_BYTE, pyramidVertexIndexStart+(arrayPositions*i));
 	}
+}
+
+function initializeLight(){
+	// light = vec3(0.0, 2.0, 0.0);
+	// light = vec3(a, b, c);
+	// m = mat4();
+	
+	// m[11] = 0.0;
+	// m[5] = -1.0/light.y;
 }
 
 function rotate(){
@@ -125,10 +131,16 @@ function adjustPerspective(){
 // Render the scene
 function render()
 {
+	//console.log(gl.GetBufferSubData(gl.ARRAY_BUFFER, 100, 1));
+	console.log(pyramidVertexIndexStart);
+	console.log(pyramidVertexIndex);
+	console.log(pyramidIndexIndex);
+	console.log(iBuffer);
+	console.log(vBuffer[101]);
     gl.clear( gl.COLOR_BUFER_BIT | gl.DEPTH_BUFFER_BIT);
 	adjustPerspective();
 	if (rotation) {rotate()};
 	renderPyramid();	
-	
-	requestAnimFrame (render);
+	//renderCube();
+	//requestAnimFrame (render);
 }
