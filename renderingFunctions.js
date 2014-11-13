@@ -27,7 +27,7 @@ var near = -10;
 var far = 10;
 var radius = 6.0;
 var theta  = 3.0/2.0*Math.PI;
-var phi    = 1.0/2.0*Math.PI;
+var phi    = 1/4*Math.PI; //.5Pi
 var dr = 3.0 * Math.PI/180.0;
 var left = -2.0;
 var right = 2.0;
@@ -134,8 +134,24 @@ function renderTrees(){
 }
 
 function renderForest(){
+	// forward right (-x, +z)
+	renderTrees();	
+	translate(-.5, 0, 3);
 	renderTrees();
+	translate(-2, 0, .5);
+	renderTrees();
+	translate(0, 0, 1);
+	renderTrees();
+	// forward left (+x, +z)
+	
+	// back left (+x, -z)
+	
+	// back right (-x, -z)
+	
+	// renderTrees();
 	translate(-3, 0, -3);
+	renderTrees();
+	translate(-3, 0, 0);
 	renderTrees();
 	translate(3, 0, 2);
 	renderTrees();
@@ -145,12 +161,48 @@ function renderForest(){
 	renderTrees();
 	translate(5, 0, -4);
 	renderTrees();
+	translate(7, 0, -5);
+	renderTrees();
+	translate(5, 0, -7);
+	renderTrees();
+	translate(7, 0, -7);
+	renderTrees();
+	translate(2, 0, -2);
+	renderTrees();
+	translate(0, 0, -4);
+	renderTrees();
+	translate(-3, 0, -2);
+	renderTrees();
+	translate(-1, 0, -2);
+	renderTrees();
 }
 
 function renderMountains(){
 	translate(0, -distanceAboveGround, 10);
 	scale(2, 5, 2);
 	renderPyramid(colorMount);
+	resetPerspective();
+}
+
+function renderSky() {
+	rotateX(Math.PI/2);
+	translate(0, 5, 0);
+	renderRectangle(colorSky);
+	resetPerspective();
+	
+	rotateX(-Math.PI/2);
+	translate(0, 15, 0);
+	renderRectangle(colorSky);
+	resetPerspective();
+	
+	rotateZ(Math.PI/2);
+	translate(0, 7, 0);
+	renderRectangle(colorSky);
+	resetPerspective();
+	
+	rotateZ(-Math.PI/2);
+	translate(0, 7, 0);
+	renderRectangle(colorSky);
 	resetPerspective();
 }
 
@@ -233,5 +285,6 @@ function render()
 	renderGround();
 	//renderTrees();
 	renderForest();
+	renderSky();
 	requestAnimFrame (render);
 }

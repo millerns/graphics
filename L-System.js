@@ -2,6 +2,11 @@
 // Nick Miller, 11/12/14
 // Settings & Init File
 
+const phiMax = 1.7;
+const phiMin = 0;
+const thetaMax = 5.2;
+const thetaMin = 4.2;
+
 // Loads all data and starts the animation
 window.onload = function init()
 {
@@ -72,18 +77,20 @@ function handleKeyboard(k){
 // Moves the camera left
 function rotateLeft(){
 	theta += dr;
+	if (theta > thetaMax) {theta = thetaMax;}
 }
 // Moves the camera right
 function rotateRight(){
 	theta -= dr;
+	if (theta < thetaMin) {theta = thetaMin;}
 }
 // Moves the camera up
 function rotateUp(){
 	phi -= dr;
-	if (phi < 0) {phi = 0;}
+	if (phi < phiMin) {phi = phiMin;}
 }
 // Moves the camera down
 function rotateDown(){
 	phi += dr;
-	if (phi > 1.7) {phi = 1.7;}
+	if (phi > phiMax) {phi = phiMax;}
 }
