@@ -7,6 +7,7 @@ const bufferSize = 1000;
 const distanceAboveGround = 5;
 
 /**************VARS***************/
+var program;
 var canvas;
 var gl;
 var colorLoc;
@@ -50,7 +51,7 @@ function setupGL(){
 
 function loadBuffers(){
 	//  Load shaders and initialize attribute buffers
-    var program = initShaders( gl, "vertex-shader", "fragment-shader" );
+    program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 	
 	colorLoc = gl.getUniformLocation (program, "color");
@@ -75,7 +76,6 @@ function loadBuffers(){
 	iBuffer = gl.createBuffer();
 	gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, iBuffer);
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, bufferSize, gl.STATIC_DRAW);
-	//gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(indices), gl.STATIC_DRAW);
 }
 
 

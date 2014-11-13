@@ -3,14 +3,18 @@
 	<head>
 		<script id="vertex-shader" type="x-shader/x-vertex">
 			attribute vec4 vPosition;
-			attribute vec4 vColor;
-			varying vec4 fColor;			
+			attribute vec4 vColor;	
+			attribute vec2 vTexCoord;
+			
+			varying vec2 fTexCoord;
+			varying vec4 fColor;	
 			
 			uniform mat4 modelViewMatrix;
 			uniform mat4 projectionMatrix;
 			
 			void main() {
 				fColor = vColor;
+				fTexCoord = vTexCoord;
 				gl_Position = projectionMatrix*modelViewMatrix*vPosition;
 			}
 		</script>
@@ -18,8 +22,15 @@
 			precision mediump float;
 			uniform vec4 color;
 			//varying vec4 color;
+			varying vec4 fColor;
+			varying vec2 fTexCoord;
+			
+			uniform sampler2D Tex0;
+			uniform sampler2D Tex1;
+			
 			void main() {
-				gl_FragColor = color;
+				//gl_FragColor = color;
+				gl_FragColor = fColor*(texture2D(Tex0, fTexCoord)*texture2D(Tex1, fTexCoord));
 			}
 		</script>
 		<script type="text/javascript" src="../Common/webgl-utils.js"></script>
@@ -29,6 +40,7 @@
 		<script type="text/javascript" src="L-SystemVars.js"></script>
 		<script type="text/javascript" src="renderingFunctions.js"></script>
 		<script type="text/javascript" src="shapes.js"></script>
+		<script type="text/javascript" src="texture.js"></script>
 	</head>
 	<body>
 		<div>
