@@ -184,6 +184,12 @@ function renderMountains(){
 	resetPerspective();
 }
 
+function renderBlockSun(){
+	translate(2.5, 2.5, 2.5);
+	renderCube(colorSun);
+	resetPerspective();
+}
+
 function renderSky() {
 	rotateX(Math.PI/2);
 	translate(0, 5, 0);
@@ -279,7 +285,8 @@ function render()
 	// model
 	renderPyramid(colorModel);
 	// model
-	renderDiamond(colorModel);
+	//renderDiamond(colorModel);
+	renderBlockSun();
 	//renderRectangle();
 	//ground/grass
 	renderGround();
