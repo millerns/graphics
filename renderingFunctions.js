@@ -126,10 +126,31 @@ function renderTrees(){
 	renderPyramid(colorTree);
 	translate(2, -.5, 1);
 	renderPyramid(colorTree);
+	translate(-.75, +.25, -.75);
+	renderPyramid(colorTree);
+	translate(-.75, +.15, +1.2);
+	renderPyramid(colorTree);
 	resetPerspective();
+}
+
+function renderForest(){
+	renderTrees();
+	translate(-3, 0, -3);
+	renderTrees();
+	translate(3, 0, 2);
+	renderTrees();
+	translate(5, 0, .75);
+	renderTrees();
+	translate(7, 0, 0);
+	renderTrees();
+	translate(5, 0, -4);
+	renderTrees();
+}
+
+function renderMountains(){
 	translate(0, -distanceAboveGround, 10);
 	scale(2, 5, 2);
-	renderPyramid(colorTree);
+	renderPyramid(colorMount);
 	resetPerspective();
 }
 
@@ -202,7 +223,7 @@ function render()
 	resetPerspective();
 	if (rotation) {rotate()};
 	// model
-	renderCube(colorModel);
+	//renderCube(colorModel);
 	// model
 	renderPyramid(colorModel);
 	// model
@@ -210,6 +231,7 @@ function render()
 	//renderRectangle();
 	//ground/grass
 	renderGround();
-	renderTrees();
+	//renderTrees();
+	renderForest();
 	requestAnimFrame (render);
 }

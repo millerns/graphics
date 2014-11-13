@@ -3,6 +3,7 @@
 // Shape Functions File
 
 var groundSize = 100;
+var pyramidSide = 1;
 /**************VARS***************/
 var cubeVertexIndex;
 var cubeIndexIndex;
@@ -88,10 +89,23 @@ function addHemisphere(){
 
 // Add a standard pyramid to the scene
 function addBasicPyramid(){
-	var basicTetrahedronA = vec4(0.0, 0.0, -1.0, 1);
-	var basicTetrahedronB = vec4(0.0, 0.942809, 0.333333, 1);
-	var basicTetrahedronC = vec4(-0.816497, -0.471405, 0.333333, 1);
-	var basicTetrahedronD = vec4(0.816497, -0.471405, 0.333333, 1);
+	// var basicTetrahedronA = vec4(0.0, 0.0, -1.0, 1);
+	// var basicTetrahedronB = vec4(0.0, 0.942809, 0.333333, 1);
+	// var basicTetrahedronC = vec4(-0.816497, -0.471405, 0.333333, 1);
+	// var basicTetrahedronD = vec4(0.816497, -0.471405, 0.333333, 1);
+	// var basicTetrahedronA = vec4(1, 1, 1, 1);
+	// var basicTetrahedronB = vec4(1, -1, -1, 1);
+	// var basicTetrahedronC = vec4(-1, 1, -1, 1);
+	// var basicTetrahedronD = vec4(-1, -1, 1, 1);
+	
+	var halfPSide = pyramidSide / 2;
+	var pHeight = Math.sqrt(2.0 / 3.0)*pyramidSide;
+	var zAdj = pyramidSide * Math.sqrt(3.0) / 4.0;	
+	var basicTetrahedronA = vec4(-halfPSide, 0, -zAdj, 1);
+	var basicTetrahedronB = vec4(halfPSide, 0, -zAdj, 1);
+	var basicTetrahedronC = vec4(0, 0, zAdj, 1);
+	var basicTetrahedronD = vec4(0, pHeight, 0, 1);
+	
 	addPyramid(basicTetrahedronA, basicTetrahedronB, basicTetrahedronC, basicTetrahedronD);
 }
 
